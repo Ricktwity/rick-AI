@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>rick AI · Coding &amp; debugging help for students</title>
+<meta name="description" content="rick AI by Benfei Tech helps students write code, understand errors, and fix bugs.">
+<link rel="icon" href="https://res.cloudinary.com/dqqyvozdw/image/upload/v1794829406/Ixzzqilpwcoxhypl940a.jpg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@500;700&family=JetBrains+Mono:wght@400;500&family=Figtree:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --royal:#4169E1; --royal-deep:#2646b8; --royal-ink:#14234f;
+  --bg:#f5f7fd; --surface:#ffffff; --line:#dde4f5; --text:#14193a; --muted:#5d6788;
+  --user-bg:#4169E1; --user-text:#ffffff;
+  --code-bg:#0f1a3d; --code-text:#e6ecff;
+  --display:"Bricolage Grotesque","Trebuchet MS",system-ui,sans-serif;
+  --body:"Figtree",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --mono:"JetBrains Mono",ui-monospace,Menlo,Consolas,monospace;
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --bg:#0a1026; --surface:#111a3a; --line:#223063; --text:#e8ecfb; --muted:#93a0cc;
+    --user-bg:#4169E1; --code-bg:#070c1f;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#0a1026; --surface:#111a3a; --line:#223063; --text:#e8ecfb; --muted:#93a0cc;
+  --user-bg:#4169E1; --code-bg:#070c1f;
+}
+*{box-sizing:border-box}
+html,body{height:100%;margin:0}
+body{background:var(--bg);color:var(--text);font:16px/1.6 var(--body);display:flex;flex-direction:column;
+  padding-top:env(safe-area-inset-top,0px)}
+button,textarea{font:inherit;color:inherit}
+:focus-visible{outline:3px solid var(--royal);outline-offset:2px}
+
+header{display:flex;align-items:center;gap:12px;padding:12px 20px;background:var(--royal);color:#fff}
+header img{width:40px;height:40px;border-radius:50%;object-fit:cover;border:2px solid rgba(255,255,255,.7)}
+.brand{line-height:1.15;flex:1}
+.brand b{font:700 1.2rem var(--display);letter-spacing:-.01em}
+.brand span{display:block;font-size:.8rem;opacity:.85}
+.hbtn{background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.35);color:#fff;border-radius:999px;
+  padding:6px 14px;cursor:pointer;font-size:.9rem}
+.hbtn:hover{background:rgba(255,255,255,.26)}
+
+main{flex:1;overflow-y:auto;scroll-behavior:smooth}
+.wrap{max-width:760px;margin:0 auto;padding:24px 20px 12px}
+
+/* Empty state */
+.hero{padding:28px 0 8px}
+.hero img{width:112px;height:112px;border-radius:50%;object-fit:cover;border:4px solid var(--royal);
+  box-shadow:0 0 0 8px color-mix(in srgb,var(--royal) 16%,transparent)}
+.hero h1{font:700 clamp(2rem,6vw,3rem)/1.05 var(--display);letter-spacing:-.03em;margin:22px 0 10px;color:var(--royal)}
+.hero p{margin:0;max-width:46ch;color:var(--muted);font-size:1.05rem}
+.starters{display:flex;flex-wrap:wrap;gap:10px;margin-top:24px}
+.starters button{background:var(--surface);border:1.5px solid var(--line);border-radius:12px;padding:10px 14px;
+  cursor:pointer;text-align:left;font-size:.95rem}
+.starters button:hover{border-color:var(--royal);color:var(--royal)}
+
+/* Messages */
+.msg{display:flex;gap:10px;margin:18px 0;align-items:flex-start}
+.msg.user{justify-content:flex-end}
+.msg .av{width:32px;height:32px;border-radius:50%;object-fit:cover;flex:none;margin-top:2px}
+.bubble{max-width:min(100%,640px);overflow-wrap:anywhere}
+.msg.user .bubble{background:var(--user-bg);color:var(--user-text);padding:10px 16px;border-radius:20px 20px 4px 20px;white-space:pre-wrap}
+.msg.bot .bubble{flex:1;min-width:0}
+.bubble p{margin:0 0 .8em}.bubble p:last-child{margin-bottom:0}
+.bubble ul,.bubble ol{margin:0 0 .8em;padding-left:1.4em}
+.bubble h3,.bubble h4{font-family:var(--display);margin:1em 0 .4em;letter-spacing:-.01em}
+.bubble code{font:.88em var(--mono);background:color-mix(in srgb,var(--royal) 13%,transparent);padding:.12em .4em;border-radius:5px}
+.codebox{margin:.6em 0 1em;border-radius:12px;overflow:hidden;background:var(--code-bg)}
+.codebar{display:flex;justify-content:space-between;align-items:center;padding:6px 12px;font:.78rem var(--mono);
+  color:#9db2ff;border-bottom:1px solid rgba(255,255,255,.08)}
+.codebar button{background:none;border:1px solid rgba(157,178,255,.4);color:#c9d6ff;border-radius:6px;padding:2px 10px;cursor:pointer;font:inherit}
+.codebar button:hover{background:rgba(157,178,255,.15)}
+.codebox pre{margin:0;padding:12px 14px;overflow-x:auto;font:.88rem/1.55 var(--mono);color:var(--code-text)}
+.codebox pre code{background:none;padding:0;font:inherit}
+.err{color:#c0392b;font-weight:500}
+.dots{display:inline-flex;gap:5px;padding:8px 0}
+.dots i{width:8px;height:8px;border-radius:50%;background:var(--royal);animation:b 1s infinite ease-in-out}
+.dots i:nth-child(2){animation-delay:.15s}.dots i:nth-child(3){animation-delay:.3s}
+@keyframes b{0%,80%,100%{opacity:.25;transform:scale(.8)}40%{opacity:1;transform:scale(1)}}
+
+/* Composer */
+footer{background:var(--bg);padding:8px 20px calc(10px + env(safe-area-inset-bottom,0px))}
+form{max-width:760px;margin:0 auto;display:flex;gap:8px;align-items:flex-end;background:var(--surface);
+  border:1.5px solid var(--line);border-radius:18px;padding:8px 8px 8px 16px}
+form:focus-within{border-color:var(--royal)}
+textarea{flex:1;border:0;background:none;resize:none;outline:none;max-height:180px;padding:7px 0;line-height:1.5}
+textarea::placeholder{color:var(--muted)}
+#send{width:42px;height:42px;border-radius:50%;border:0;background:var(--royal);color:#fff;cursor:pointer;flex:none;
+  display:grid;place-items:center}
+#send:hover{background:var(--royal-deep)}
+#send:disabled{opacity:.45;cursor:not-allowed}
+.note{max-width:760px;margin:6px auto 0;text-align:center;font-size:.78rem;color:var(--muted)}
+@media (prefers-reduced-motion:reduce){main{scroll-behavior:auto}.dots i{animation:none;opacity:.7}}
+</style>
+</head>
+<body>
+<header>
+  <img src="https://res.cloudinary.com/dqqyvozdw/image/upload/v1794829406/Ixzzqilpwcoxhypl940a.jpg" alt="rick AI logo">
+  <div class="brand"><b>rick AI</b><span>Built by Benfei Tech</span></div>
+  <button class="hbtn" id="theme" type="button" aria-label="Switch light or dark theme">Theme</button>
+  <button class="hbtn" id="new" type="button">New chat</button>
+</header>
+
+<main id="scroller"><div class="wrap" id="chat" aria-live="polite"></div></main>
+
+<footer>
+  <form id="form" autocomplete="off">
+    <textarea id="input" rows="1" placeholder="Paste your code or error here…" aria-label="Message rick AI" maxlength="8000"></textarea>
+    <button id="send" type="submit" aria-label="Send message">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19V5M5 12l7-7 7 7"/></svg>
+    </button>
+  </form>
+  <p class="note">Answers can contain mistakes. Run and test any code before you rely on it.</p>
+</footer>
+
+<script>
+(function () {
+  var AVATAR = "https://res.cloudinary.com/dqqyvozdw/image/upload/v1794829406/Ixzzqilpwcoxhypl940a.jpg";
+  var STARTERS = [
+    "Why does my Python loop never stop?",
+    "Explain this error: undefined is not a function",
+    "What is recursion? Show me a simple example",
+    "Help me debug my JavaScript code"
+  ];
+  var chat = document.getElementById("chat"), scroller = document.getElementById("scroller"),
+      form = document.getElementById("form"), input = document.getElementById("input"),
+      sendBtn = document.getElementById("send");
+  var history = [], busy = false;
+
+  // ---- storage helpers (wrapped: storage can be unavailable) ----
+  function load(k) { try { return localStorage.getItem(k); } catch (e) { return null; } }
+  function save(k, v) { try { localStorage.setItem(k, v); } catch (e) {} }
+
+  // ---- theme ----
+  var root = document.documentElement;
+  var savedTheme = load("rick-theme"); if (savedTheme) root.setAttribute("data-theme", savedTheme);
+  document.getElementById("theme").onclick = function () {
+    var dark = root.getAttribute("data-theme") === "dark" ||
+      (!root.getAttribute("data-theme") && matchMedia("(prefers-color-scheme: dark)").matches);
+    var next = dark ? "light" : "dark"; root.setAttribute("data-theme", next); save("rick-theme", next);
+  };
+
+  // ---- tiny markdown renderer (escapes HTML first, so it is safe) ----
+  function esc(s) { return s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;"); }
+  function inline(s) {
+    return esc(s).replace(/`([^`\n]+)`/g, "<code>$1</code>")
+      .replace(/\*\*([^*\n]+)\*\*/g, "<strong>$1</strong>")
+      .replace(/(^|[^*])\*([^*\n]+)\*/g, "$1<em>$2</em>");
+  }
+  function md(text) {
+    var out = "", parts = text.split("```");
+    parts.forEach(function (part, i) {
+      if (i % 2 === 1) { // code block (an unclosed fence still renders while streaming)
+        var nl = part.indexOf("\n"), lang = nl > -1 ? part.slice(0, nl).trim() : "", code = nl > -1 ? part.slice(nl + 1) : part;
+        out += '<div class="codebox"><div class="codebar"><span>' + esc(lang || "code") +
+          '</span><button type="button" data-copy>Copy</button></div><pre><code>' + esc(code.replace(/\n$/, "")) + "</code></pre></div>";
+        return;
+      }
+      var list = null, para = [];
+      function flushP() { if (para.length) { out += "<p>" + para.join("<br>") + "</p>"; para = []; } }
+      function flushL() { if (list) { out += "</" + list + ">"; list = null; } }
+      part.split("\n").forEach(function (line) {
+        var h = line.match(/^#{1,4}\s+(.*)/), ul = line.match(/^\s*[-*]\s+(.*)/), ol = line.match(/^\s*\d+[.)]\s+(.*)/);
+        if (h) { flushP(); flushL(); out += "<h3>" + inline(h[1]) + "</h3>"; }
+        else if (ul || ol) { flushP(); var t = ul ? "ul" : "ol"; if (list !== t) { flushL(); out += "<" + t + ">"; list = t; }
+          out += "<li>" + inline((ul || ol)[1]) + "</li>"; }
+        else if (!line.trim()) { flushP(); flushL(); }
+        else { flushL(); para.push(inline(line)); }
+      });
+      flushP(); flushL();
+    });
+    return out;
+  }
+
+  // ---- rendering ----
+  function scrollDown() { scroller.scrollTop = scroller.scrollHeight; }
+  function addMsg(role, html) {
+    var row = document.createElement("div"); row.className = "msg " + role;
+    var b = document.createElement("div"); b.className = "bubble";
+    if (role === "bot") { var a = document.createElement("img"); a.className = "av"; a.src = AVATAR; a.alt = ""; row.appendChild(a); b.innerHTML = html; }
+    else b.textContent = html;
+    row.appendChild(b); chat.appendChild(row); scrollDown(); return b;
+  }
+  function showHero() {
+    chat.innerHTML = '<div class="hero"><img src="' + AVATAR + '" alt="rick AI"><h1>Stuck on your code?</h1>' +
+      "<p>I’m rick AI. Paste your code or error message and I’ll help you find the bug and understand why it happened.</p>" +
+      '<div class="starters"></div></div>';
+    var box = chat.querySelector(".starters");
+    STARTERS.forEach(function (s) {
+      var b = document.createElement("button"); b.type = "button"; b.textContent = s;
+      b.onclick = function () { send(s); }; box.appendChild(b);
+    });
+  }
+  chat.addEventListener("click", function (e) {
+    var btn = e.target.closest("[data-copy]"); if (!btn) return;
+    var code = btn.closest(".codebox").querySelector("code").textContent;
+    var done = function () { btn.textContent = "Copied"; setTimeout(function () { btn.textContent = "Copy"; }, 1400); };
+    if (navigator.clipboard) navigator.clipboard.writeText(code).then(done, function () {}); 
+  });
+
+  // ---- sending + streaming ----
+  async function send(text) {
+    text = (text || "").trim(); if (!text || busy) return;
+    busy = true; sendBtn.disabled = true;
+    if (!history.length) chat.innerHTML = "";
+    history.push({ role: "user", content: text });
+    addMsg("user", text);
+    input.value = ""; resize();
+    var bubble = addMsg("bot", '<span class="dots"><i></i><i></i><i></i></span>');
+    var reply = "";
+    try {
+      var res = await fetch("/api/chat", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ messages: history }) });
+      if (!res.ok) { var j = {}; try { j = await res.json(); } catch (e) {} throw new Error(j.error || "Request failed (" + res.status + ")."); }
+      var reader = res.body.getReader(), dec = new TextDecoder(), buf = "";
+      for (;;) {
+        var r = await reader.read(); if (r.done) break;
+        buf += dec.decode(r.value, { stream: true });
+        var lines = buf.split("\n"); buf = lines.pop();
+        for (var i = 0; i < lines.length; i++) {
+          if (lines[i].indexOf("data:") !== 0) continue;
+          try {
+            var ev = JSON.parse(lines[i].slice(5));
+            if (ev.type === "content_block_delta" && ev.delta && ev.delta.text) { reply += ev.delta.text; bubble.innerHTML = md(reply); scrollDown(); }
+            else if (ev.type === "error") throw new Error("The AI service had a problem. Please try again.");
+          } catch (pe) { if (pe.message && pe.message.indexOf("AI service") > -1) throw pe; }
+        }
+      }
+      if (!reply) throw new Error("No reply came back. Please try again.");
+      history.push({ role: "assistant", content: reply });
+      save("rick-chat", JSON.stringify(history.slice(-20)));
+    } catch (err) {
+      bubble.innerHTML = (reply ? md(reply) : "") + '<p class="err">' + esc(err.message || "Something went wrong.") + " Send your message again to retry.</p>";
+      if (!reply) history.pop();
+    }
+    busy = false; sendBtn.disabled = false; input.focus(); scrollDown();
+  }
+
+  // ---- input behavior ----
+  function resize() { input.style.height = "auto"; input.style.height = Math.min(input.scrollHeight, 180) + "px"; }
+  input.addEventListener("input", resize);
+  input.addEventListener("keydown", function (e) { if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); send(input.value); } });
+  form.addEventListener("submit", function (e) { e.preventDefault(); send(input.value); });
+  document.getElementById("new").onclick = function () { if (busy) return; history = []; save("rick-chat", "[]"); showHero(); input.focus(); };
+
+  // ---- restore previous chat ----
+  try {
+    var prev = JSON.parse(load("rick-chat") || "[]");
+    if (Array.isArray(prev) && prev.length) {
+      history = prev;
+      prev.forEach(function (m) { if (m.role === "user") addMsg("user", m.content); else addMsg("bot", md(m.content)); });
+    } else showHero();
+  } catch (e) { showHero(); }
+})();
+</script>
+</body>
+</html>
